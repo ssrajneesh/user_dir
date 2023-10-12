@@ -1,0 +1,30 @@
+{
+  "name": "express_api",
+  "version": "1.0.0",
+  "description": "Trying to build APIs in express",
+  "main": "index.js",
+  "scripts": {
+    "test": "NA",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssrajneesh/express_api.git"
+  },
+  "author": "Rajneesh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ssrajneesh/express_api/issues"
+  },
+  "homepage": "https://github.com/ssrajneesh/express_api#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-joi-validation": "^5.0.1",
+    "joi": "^17.10.2",
+    "mongoose": "^7.5.3",
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-sequence": "^5.3.1",
+    "nodemon": "^3.0.1"
+  }
+}
