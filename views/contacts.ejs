@@ -1,0 +1,15 @@
+<!-- contacts.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact List</title>
+</head>
+<body>
+    <h1>Contact List</h1>
+    <ul>
+        <% contacts.forEach(function(contact) { %>
+            <li><%= contact.name %>: <%= contact.email %></li>
+        <% }); %>
+    </ul>
+</body>
+</html>

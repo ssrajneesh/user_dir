@@ -3,7 +3,8 @@ const dotenv = require("dotenv").config()
 const Joi = require('joi')
 const { validateEntries } = require('../middleware/validate');
 const port = process.env.DATABASE_ACCESS
-const { ncontact, connection } = require('../models/crudmodel');
+const { ncontact, connection, User } = require('../models/crudmodel');
+const jwt = require('jsonwebtoken');
 
 const getContact = async (req, res) => {
     try {
@@ -21,7 +22,7 @@ const getContact = async (req, res) => {
         const contacts = await query
             .skip(skip)
             .limit(docs);
-        res.status(200).json(contacts);
+            res.render('contacts', { contacts });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -77,4 +78,47 @@ const deleteContact = async (req, res) => {
     }
 };
 
-module.exports = { getContact, get1Contact, createContact, updateContact, deleteContact }
+const register_new = async (req, res) => {
+    const { name, email, password } = req.body;
+  
+    try {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: 'Email already in use' });
+      }
+      const user = new User({ name, email, password });
+      await user.save();
+      const token = jwt.sign({ userId: user._id }, 'secret-key', { expiresIn: '1h' });
+      res.status(201).json({ token });
+    } catch (err) {
+      res.status(500).json({ error: 'Registration failed' });
+    }
+  };
+
+const log_in = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user || !user.validatePassword(password)) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+      const token = jwt.sign({ userId: user._id }, 'secret-key', { expiresIn: '1h' });
+      res.json({ token });
+    } catch (err) {
+      res.status(500).json({ error: 'Login failed' });
+    }
+  };
+
+
+const handleImageUpload = (req, res) => {
+    const uploadedImage = req.file;
+    if (!uploadedImage){
+    res.send('Attach image!');
+    }
+    res.send('Image uploaded successfully!');
+  }
+
+  
+
+  
+module.exports = { getContact, get1Contact, createContact, updateContact, deleteContact, register_new, log_in, handleImageUpload}

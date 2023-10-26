@@ -6,7 +6,6 @@ const createContactValidationSchema = Joi.object({
   address: Joi.string().min(4).max(10).required(),
 });
 
-
 const validateCreateContact = (req, res, next) => {
   const { error } = createContactValidationSchema.validate(req.body);
 
@@ -17,6 +16,22 @@ const validateCreateContact = (req, res, next) => {
   next();
 };
 
+const regiter_validation = Joi.object({
+  name: Joi.string().min(4).max(10).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(4).max(10).required(),
+});
+
+const validateRegister = (req, res, next) => {
+  const { error } = regiter_validation.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  next();
+};
+
 module.exports = {
   validateCreateContact,
+  validateRegister
 };

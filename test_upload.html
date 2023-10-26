@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload</title>
+</head>
+<body>
+    <h1>Image Upload</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/jpeg, image/jpg, image/png" required>
+        <button type="button" onclick="uploadImage()">Upload</button>
+    </form>
+    <p id="statusMessage"></p>
+
+    <script>
+        function uploadImage() {
+            const form = document.getElementById("uploadForm");
+            const statusMessage = document.getElementById("statusMessage");
+
+            const formData = new FormData(form);
+
+            fetch('http://localhost:5001/api/upload', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                statusMessage.textContent = 'Image uploaded successfully';
+            })
+            .catch(error => {
+                statusMessage.textContent = 'Error uploading image';
+            });
+        }
+    </script>
+</body>
+</html>
