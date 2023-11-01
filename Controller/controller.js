@@ -5,6 +5,19 @@ const { validateEntries } = require('../middleware/validate');
 const port = process.env.DATABASE_ACCESS
 const { ncontact, connection, User } = require('../models/crudmodel');
 const jwt = require('jsonwebtoken');
+const {getObjectURL} = require('../middleware/s3cred')
+
+const getImg = async (req,res) =>{      
+    const {img} = req.query
+    console.log(img)
+    try{
+        imglink = await getObjectURL(img);
+        res.status(200).json({"link":imglink});
+    }catch{
+        res.status(500).json({ error: error.message });
+    }
+    
+}
 
 const getContact = async (req, res) => {
     try {
@@ -121,4 +134,4 @@ const handleImageUpload = (req, res) => {
   
 
   
-module.exports = { getContact, get1Contact, createContact, updateContact, deleteContact, register_new, log_in, handleImageUpload}
+module.exports = { getContact, get1Contact, createContact, updateContact, deleteContact, register_new, log_in, handleImageUpload, getImg}

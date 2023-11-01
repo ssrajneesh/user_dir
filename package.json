@@ -9,15 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ssrajneesh/express_api.git"
+    "url": "git+https://github.com/ssrajneesh/user_dir.git"
   },
   "author": "Rajneesh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ssrajneesh/express_api/issues"
+    "url": "https://github.com/ssrajneesh/user_dir/issues"
   },
-  "homepage": "https://github.com/ssrajneesh/express_api#readme",
+  "homepage": "https://github.com/ssrajneesh/user_dir#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.438.0",
+    "@aws-sdk/s3-request-presigner": "^3.438.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",
