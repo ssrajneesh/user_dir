@@ -5,18 +5,22 @@ const { validateEntries } = require('../middleware/validate');
 const port = process.env.DATABASE_ACCESS
 const { ncontact, connection, User } = require('../models/crudmodel');
 const jwt = require('jsonwebtoken');
-const {getObjectURL} = require('../middleware/s3cred')
+const {getObjectURL} = require('../middleware/s3cred');
+const s3 = require('../config/s3');
 
 const getImg = async (req,res) =>{      
     const {img} = req.query
-    console.log(img)
     try{
-        imglink = await getObjectURL(img);
-        res.status(200).json({"link":imglink});
-    }catch{
-        res.status(500).json({ error: error.message });
-    }
-    
+        const signedUrl = await s3.getSignedUrl('getObject', {
+            Bucket: "crudupdate",
+            Key: img,
+            Expires: 3600,
+          });
+        console.log(signedUrl)
+        res.status(201).json({"link":signedUrl});
+    } catch (error) {
+        res.status(401).json({ error: error.message });
+    }   
 }
 
 const getContact = async (req, res) => {
@@ -124,7 +128,8 @@ const log_in = async (req, res) => {
 
 
 const handleImageUpload = (req, res) => {
-    const uploadedImage = req.file;
+    const uploadedImage = req.file.location;
+    console.log(uploadedImage)
     if (!uploadedImage){
     res.send('Attach image!');
     }
